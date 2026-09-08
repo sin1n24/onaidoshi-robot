@@ -24,12 +24,16 @@
   const robotKindEl = document.getElementById("robotKind");
   const robotBlurbEl = document.getElementById("robotBlurb");
   const shareBtn = document.getElementById("shareBtn");
+  const imageSearchBtn = document.getElementById("imageSearchBtn");
   const moreBtn = document.getElementById("moreBtn");
   const cardEl = document.getElementById("card");
 
   yearInput.max = String(CURRENT_YEAR);
   rangeInput.max = String(CURRENT_YEAR);
   rangeMaxLabel.textContent = String(CURRENT_YEAR);
+  // rangeInput の max はHTML上仮の値(2100)だったため、正しいmaxに更新した直後に
+  // value を明示的に再代入してつまみの位置を再計算させる(でないと初期位置がズレる)
+  rangeInput.value = yearInput.value;
 
   function clampYear(v) {
     v = Math.round(v);
@@ -97,10 +101,18 @@
 
   let queue = [];
   let requestedYear = 0;
+  // true のときは「一覧から直接開いた記録」であり、閲覧者自身の生まれ年とは無関係。
+  // シェア文で「私は◯◯年生まれ」と偽らないよう、この場合は文面を変える。
+  let cameFromDirectLink = false;
 
   function render(robot, isFallback, actualYear) {
     fileNoEl.textContent = String(robot.id).padStart(3, "0");
-    cardYearEl.textContent = actualYear + "年生まれ";
+    // フィクションは実年表とのズレが分かるよう、作中設定の年か発表年かを併記する
+    let yearNote = "";
+    if (robot.fiction) {
+      yearNote = robot.yearType === "story" ? "（作中設定）" : "（公開年）";
+    }
+    cardYearEl.textContent = actualYear + "年生まれ" + yearNote;
 
     if (isFallback) {
       fallbackNoteEl.hidden = false;
@@ -125,12 +137,22 @@
     robotKindEl.textContent = robot.fiction ? "フィクション" : "実在";
     robotBlurbEl.textContent = robot.blurb;
 
-    const shareText = isFallback
-      ? "私(" + requestedYear + "年生まれ)とだいたい同い年(" + actualYear + "年生まれ)のロボットは「" + robot.name + "」でした🤖 #同い年ロボット"
-      : "私(" + requestedYear + "年生まれ)と同い年のロボットは「" + robot.name + "」でした🤖 #同い年ロボット";
+    let shareText;
+    if (cameFromDirectLink) {
+      // 一覧からの直接表示: 閲覧者の生まれ年は分からないので「同い年」を名乗らない
+      shareText = "「" + robot.name + "」（" + actualYear + "年）を見つけました🤖 #同い年ロボット";
+    } else if (isFallback) {
+      shareText =
+        "私(" + requestedYear + "年生まれ)とだいたい同い年(" + actualYear + "年生まれ)のロボットは「" + robot.name + "」でした🤖 #同い年ロボット";
+    } else {
+      shareText = "私(" + requestedYear + "年生まれ)と同い年のロボットは「" + robot.name + "」でした🤖 #同い年ロボット";
+    }
     const shareUrl = location.origin + location.pathname + "?year=" + requestedYear + "&id=" + robot.id;
     shareBtn.href =
       "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(shareUrl);
+
+    const imageQuery = robot.searchName || (robot.name + (robot.nameEn ? " " + robot.nameEn : ""));
+    imageSearchBtn.href = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(imageQuery);
 
     moreBtn.hidden = queue.length === 0;
 
@@ -151,6 +173,7 @@
     if (presetId != null) {
       const robot = ROBOTS.find((r) => r.id === presetId);
       if (robot) {
+        cameFromDirectLink = true;
         const group = byYear.get(robot.year) || [robot];
         queue = shuffle(group.filter((r) => r !== robot));
         render(robot, robot.year !== year, robot.year);
@@ -158,6 +181,7 @@
       }
     }
 
+    cameFromDirectLink = false;
     const { list, exact, year: actualYear } = candidatesFor(year);
     const shuffled = shuffle(list);
     const robot = shuffled[0];
@@ -185,6 +209,8 @@
   if (!Number.isNaN(paramYear) && !Number.isNaN(paramId)) {
     yearInput.value = clampYear(paramYear);
     rangeInput.value = yearInput.value;
-    pickAndRender(clampYear(paramYear), paramId);
+    // フォーム欄は1950〜現在の範囲に収めるが、だいたい同い年の判定には元の年をそのまま使う
+    // (1927年のマリアや2112年のドラえもんのような範囲外の記録も、一覧からのリンクでは正しく表示するため)
+    pickAndRender(paramYear, paramId);
   }
 })();

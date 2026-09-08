@@ -107,8 +107,7 @@
     </div>
 
     <section class="hero">
-      <h1>あなたと同い年の<br>ロボットは？</h1>
-      <p class="lead">生まれ年を入力すると、1950年〜現在に誕生した実在のロボットやロボット競技の中から、同じ年の記録を1件呼び出します。ぴったりの年がない場合は、一番近い年の記録を「だいたい同い年」として表示します。</p>
+      <h1><a href="https://sin1.studio/onaidoshi-robot/">あなたと同い年の<br>ロボットは？</a></h1>
 
       <form id="form">
         <div class="dial">
@@ -120,7 +119,7 @@
           <button type="button" class="step" id="inc" aria-label="1年後へ">＋</button>
         </div>
         <div class="range-row">
-          <input type="range" id="yearRange" min="1950" value="1990">
+          <input type="range" id="yearRange" min="1950" max="2100" value="1990">
           <div class="range-labels"><span>1950</span><span id="rangeMax">2026</span></div>
         </div>
         <button type="submit" class="submit">同い年のロボットを探す</button>
@@ -157,6 +156,10 @@
             <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             <span>Xで共有する</span>
           </a>
+          <a class="btn btn-image" id="imageSearchBtn" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5.5-5.5L4 21"/></svg>
+            <span>画像を検索</span>
+          </a>
           <button type="button" class="btn btn-more" id="moreBtn" hidden>この年の別の記録を見る</button>
         </div>
       </div>
@@ -166,7 +169,7 @@
       <a class="footer-logo" href="https://sin1.studio/">
         <img src="img/sss_logo_3x1_white.png" alt="sin1's studio">
       </a>
-      <p>実在のロボット・ロボット競技のほか、有名な架空のロボットも収録しています。データは編集者が調べた範囲でまとめたものです。</p>
+      <p>実在のロボット・ロボット競技のほか、有名な架空のロボットも収録しています。データは編集者が調べた範囲でまとめたものです。内容に誤りがあれば申し訳ありません。お気づきの点は<a href="mailto:sin1@sin1.studio">こちら</a>までご連絡ください。</p>
     </footer>
   </div>
 </div>

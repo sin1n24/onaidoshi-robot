@@ -121,6 +121,13 @@ body {
   letter-spacing: 0.01em;
   margin: 0 0 14px;
 }
+.hero h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+.hero h1 a:hover {
+  color: var(--amber);
+}
 
 .hero p.lead {
   color: var(--cream-dim);
@@ -387,6 +394,15 @@ input[type="range"] {
   width: 15px;
   height: 15px;
   fill: currentColor;
+}
+.btn-image {
+  background: transparent;
+  border-color: var(--ink-soft);
+  color: var(--ink);
+}
+.btn-image svg {
+  width: 16px;
+  height: 16px;
 }
 .btn-more {
   background: transparent;
