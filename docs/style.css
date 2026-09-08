@@ -11,6 +11,7 @@
   --ink-soft: #6b6046;
   --amber: #e8952f;
   --amber-deep: #a9660f;
+  --steel: #3d6b8f;
   --cream: #f4efe4;
   --cream-dim: rgba(244, 239, 228, 0.68);
   --radius: 6px;
@@ -396,7 +397,35 @@ input[type="range"] {
   display: none;
 }
 
-/* ---------- ledger (list.html) ---------- */
+/* ---------- filter bar + ledger (list.html) ---------- */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.filter-pill {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(154, 196, 224, 0.35);
+  background: transparent;
+  color: var(--cream-dim);
+  font-family: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.filter-pill:hover {
+  border-color: var(--amber);
+}
+.filter-pill.is-active {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--navy-deep);
+  font-weight: 700;
+}
 
 .ledger {
   background: var(--paper);
@@ -416,8 +445,12 @@ input[type="range"] {
   border-bottom: 1px dashed var(--paper-edge);
   border-left: 3px solid transparent;
 }
-.ledger-row:last-child {
+.ledger-row:last-child,
+.ledger-row.is-last-visible {
   border-bottom: none;
+}
+.ledger-row[hidden] {
+  display: none;
 }
 .ledger-row:hover {
   background: rgba(232, 149, 47, 0.1);
@@ -462,6 +495,10 @@ input[type="range"] {
   border-color: var(--amber-deep);
   color: var(--amber-deep);
 }
+.ledger-kind.is-competition {
+  border-color: var(--steel);
+  color: var(--steel);
+}
 
 @media (max-width: 420px) {
   .ledger-row {
@@ -501,7 +538,7 @@ footer .footer-logo:hover {
   opacity: 1;
 }
 footer .footer-logo img {
-  height: 22px;
+  height: 44px;
   width: auto;
   display: block;
 }

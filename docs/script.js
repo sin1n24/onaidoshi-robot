@@ -57,24 +57,32 @@
   yearInput.addEventListener("change", syncFromNumber);
   rangeInput.addEventListener("input", syncFromRange);
 
-  // 年ごとの候補一覧
+  // 年ごとの候補一覧（IDから直接記録を開く用。フィクションも含む全件）
   const byYear = new Map();
   ROBOTS.forEach((r) => {
     if (!byYear.has(r.year)) byYear.set(r.year, []);
     byYear.get(r.year).push(r);
   });
-  const availableYears = Array.from(byYear.keys()).sort((a, b) => a - b);
+
+  // 「同い年のロボットを探す」検索が対象にするのは実在ロボット・ロボット競技のみ。
+  // フィクションのロボットは一覧ページでのみ閲覧できる(架空の年で同い年を名乗るのを避けるため)。
+  const byYearSearchable = new Map();
+  ROBOTS.filter((r) => !r.fiction).forEach((r) => {
+    if (!byYearSearchable.has(r.year)) byYearSearchable.set(r.year, []);
+    byYearSearchable.get(r.year).push(r);
+  });
+  const availableSearchableYears = Array.from(byYearSearchable.keys()).sort((a, b) => a - b);
 
   function candidatesFor(year) {
-    if (byYear.has(year)) return { year, exact: true, list: byYear.get(year) };
+    if (byYearSearchable.has(year)) return { year, exact: true, list: byYearSearchable.get(year) };
     // 一番近い年（複数タイなら両方の年をまとめて対象にする）
     let bestDiff = Infinity;
-    availableYears.forEach((y) => {
+    availableSearchableYears.forEach((y) => {
       const diff = Math.abs(y - year);
       if (diff < bestDiff) bestDiff = diff;
     });
-    const nearYears = availableYears.filter((y) => Math.abs(y - year) === bestDiff);
-    const list = nearYears.flatMap((y) => byYear.get(y));
+    const nearYears = availableSearchableYears.filter((y) => Math.abs(y - year) === bestDiff);
+    const list = nearYears.flatMap((y) => byYearSearchable.get(y));
     return { year: nearYears[0], exact: false, list };
   }
 
@@ -117,8 +125,9 @@
     robotKindEl.textContent = robot.fiction ? "フィクション" : "実在";
     robotBlurbEl.textContent = robot.blurb;
 
-    const shareText =
-      "私(" + requestedYear + "年生まれ)と同い年のロボットは「" + robot.name + "」でした🤖 #同い年ロボット";
+    const shareText = isFallback
+      ? "私(" + requestedYear + "年生まれ)とだいたい同い年(" + actualYear + "年生まれ)のロボットは「" + robot.name + "」でした🤖 #同い年ロボット"
+      : "私(" + requestedYear + "年生まれ)と同い年のロボットは「" + robot.name + "」でした🤖 #同い年ロボット";
     const shareUrl = location.origin + location.pathname + "?year=" + requestedYear + "&id=" + robot.id;
     shareBtn.href =
       "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(shareUrl);
