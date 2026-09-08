@@ -1,6 +1,18 @@
 // 同い年ロボット データベース
-// 実在するロボット・探査機を「誕生年(発表/稼働開始年)」でまとめたもの。
-// category は line-art アイコンの種類に対応: industrial_arm / wheeled_rover / humanoid / space / home / pet / quadruped / other
+// 実在するロボット・探査機・ロボット競技・有名な架空のロボットを「誕生年」でまとめたもの。
+// 誕生年は基本的に初出/稼働開始年。fiction:true のものは注記がある場合のみ作中設定の生年を採用(例: ドラえもん)。
+// category は line-art アイコンの種類に対応: industrial_arm / wheeled_rover / humanoid / space / home / pet / quadruped / other / competition
+const CATEGORY_LABEL = {
+  industrial_arm: "産業用ロボットアーム",
+  wheeled_rover: "移動ロボット",
+  humanoid: "人型ロボット(ヒューマノイド)",
+  space: "宇宙探査ロボット",
+  home: "家庭用ロボット",
+  pet: "ペット型ロボット",
+  quadruped: "四足歩行ロボット",
+  other: "特殊用途ロボット",
+  competition: "ロボット競技",
+};
 const ROBOTS = [
   { id: 1, year: 1961, name: "ユニメート", nameEn: "Unimate", maker: "Unimation", category: "industrial_arm",
     blurb: "ゼネラルモーターズの工場に配備された、世界初の実用産業用ロボット。高温のダイカスト成形品を取り出す作業を任された。" },
@@ -100,4 +112,34 @@ const ROBOTS = [
     blurb: "無人の自動運転車が砂漠のコースを走りきる競技会。前年は誰も完走できなかったコースを複数チームが踏破した。" },
   { id: 49, year: 2015, name: "DARPAロボティクス・チャレンジ", nameEn: "DARPA Robotics Challenge", maker: "DARPA(米国)", category: "competition",
     blurb: "災害現場を想定し、ドアを開けたり車を運転したりする複合タスクにロボットが挑んだ国際大会の決勝。" },
+
+  // ここから架空(フィクション)のロボット。年は初出作品の発表年(注記がある場合は作中設定の生年)。
+  { id: 50, year: 1952, name: "鉄腕アトム", nameEn: "Astro Boy", maker: "手塚治虫『鉄腕アトム』", category: "humanoid", fiction: true,
+    blurb: "10万馬力を誇る、日本の漫画・アニメ史を代表する人型ロボット。作中では2003年4月7日生まれという設定でも知られる。" },
+  { id: 51, year: 1956, name: "鉄人28号", nameEn: "Tetsujin 28-go", maker: "横山光輝『鉄人28号』", category: "humanoid", fiction: true,
+    blurb: "リモコンで操縦される巨大ロボット。日本の巨大ロボットものの原点といわれる作品の主役機。" },
+  { id: 52, year: 1956, name: "ロビー・ザ・ロボット", nameEn: "Robby the Robot", maker: "映画『禁断の惑星』", category: "other", fiction: true,
+    blurb: "SF映画史に大きな影響を与えた愛嬌あるロボット。以降のロボットキャラクターデザインの原型のひとつといわれる。" },
+  { id: 53, year: 1963, name: "エイトマン", nameEn: "8th Man", maker: "平井和正・桑田次郎『エイトマン』", category: "humanoid", fiction: true,
+    blurb: "殉職した刑事の魂を移植されたサイボーグ型ロボットヒーロー。テレビアニメとしても放送された。" },
+  { id: 54, year: 1968, name: "HAL 9000", maker: "映画『2001年宇宙の旅』", category: "other", fiction: true,
+    blurb: "宇宙船を管理する人工知能。静かで丁寧な話し方の裏に潜む不気味さで知られる。" },
+  { id: 55, year: 1972, name: "マジンガーZ", nameEn: "Mazinger Z", maker: "永井豪『マジンガーZ』", category: "humanoid", fiction: true,
+    blurb: "パイロットが頭部に搭乗して操縦する巨大ロボット。「変形・合体ロボットもの」の元祖のひとつとして知られる。" },
+  { id: 56, year: 1977, name: "R2-D2 & C-3PO", maker: "映画『スター・ウォーズ』", category: "other", fiction: true,
+    blurb: "凸凹コンビとして活躍するドロイド2体。頑丈な樽型のR2-D2と礼儀正しいC-3POという対照的な性格で愛された。" },
+  { id: 57, year: 1979, name: "ガンダム(RX-78-2)", nameEn: "Mobile Suit Gundam", maker: "『機動戦士ガンダム』", category: "humanoid", fiction: true,
+    blurb: "人が乗り込んで操縦するモビルスーツ。以降続く「リアルロボットもの」というジャンルを切り開いた作品の主役機。" },
+  { id: 58, year: 1984, name: "ターミネーター(T-800)", nameEn: "Terminator", maker: "映画『ターミネーター』", category: "humanoid", fiction: true,
+    blurb: "人間そっくりの姿をした殺人サイボーグ。SF映画史に残る役どころとして知られる。" },
+  { id: 59, year: 1999, name: "アイアン・ジャイアント", nameEn: "The Iron Giant", maker: "映画『アイアン・ジャイアント』", category: "humanoid", fiction: true,
+    blurb: "空から落ちてきた謎の巨大ロボット。少年との友情を描いたアニメ映画で人気を博した。" },
+  { id: 60, year: 2007, name: "オプティマスプライム", nameEn: "Optimus Prime", maker: "映画『トランスフォーマー』", category: "humanoid", fiction: true,
+    blurb: "トラックに変形するオートボットのリーダー。地球を守るため人間と共闘する姿で知られる。" },
+  { id: 61, year: 2008, name: "WALL・E", nameEn: "WALL-E", maker: "映画『WALL・E/ウォーリー』", category: "other", fiction: true,
+    blurb: "ゴミだらけの地球にたった一人残り、黙々と掃除を続けていた小型ロボット。双眼鏡のような目が特徴。" },
+  { id: 62, year: 2014, name: "ベイマックス", nameEn: "Baymax", maker: "映画『ベイマックス』", category: "humanoid", fiction: true,
+    blurb: "ふんわりした見た目のケアロボット。人の心と体をケアするために開発されたという設定。" },
+  { id: 63, year: 2112, name: "ドラえもん", nameEn: "Doraemon", maker: "藤子・F・不二雄『ドラえもん』", category: "pet", fiction: true,
+    blurb: "22世紀からやってきた猫型ロボット。作中の設定で誕生日は2112年9月3日とされている。" },
 ];

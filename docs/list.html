@@ -1,0 +1,51 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>記録一覧 — 同い年ロボット</title>
+<meta name="description" content="「同い年ロボット」に収録している実在のロボット・ロボット競技・架空のロボットの全記録一覧。">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+
+<div class="sheet">
+  <div class="wrap">
+    <div class="mark">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 14h24v9a12 12 0 0 1-24 0z"/><path d="M20 16h-6a6 6 0 0 0 6 10"/><path d="M44 16h6a6 6 0 0 1-6 10"/><line x1="32" y1="35" x2="32" y2="46"/><rect x="22" y="46" width="20" height="6" rx="1"/>
+      </svg>
+      <span>記録一覧 — <a href="https://sin1.studio/">sin1's studio</a></span>
+      <a class="list-link" href="index.html">検索へ戻る</a>
+    </div>
+
+    <section class="hero" style="text-align:left">
+      <h1 style="font-size:clamp(1.4rem,5vw,1.9rem)">同い年ロボット 記録一覧</h1>
+      <p class="lead" style="margin:0 0 28px">収録している全記録です。年をクリックすると、その記録のカードを直接表示します。</p>
+    </section>
+
+    <div class="ledger" id="ledger"></div>
+
+    <footer>
+      <a class="footer-logo" href="https://sin1.studio/">
+        <img src="img/sss_logo_3x1_white.png" alt="sin1's studio">
+      </a>
+      <p>実在のロボット・ロボット競技のほか、有名な架空のロボットも収録しています。データは編集者が調べた範囲でまとめたものです。</p>
+    </footer>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  (function () {
+    const ledger = document.getElementById("ledger");
+    const sorted = ROBOTS.slice().sort((a, b) => a.year - b.year || a.id - b.id);
+    sorted.forEach((r) => {
+      const a = document.createElement("a");
+      a.className = "ledger-row";
+      a.href = "index.html?year=" + r.year + "&id=" + r.id;
+      a.innerHTML =
+        '<span class="ledger-year">' + r.year + "</span>" +
+        '<span class="ledger-name">' + r.name + (r.nameEn ? '<span class="ledger-en">' + r.nameEn + "</span>" : "") + "</span>" +
+        '<span class="ledger-cat">' + (CATEGORY_LABEL[r.category] || r.category) + "</span>" +
+        '<span class="ledger-kind' + (r.fiction ? " is-fiction" : "") + '">' + (r.fiction ? "フィクション" : "実在") + "</span>";
+      ledger.appendChild(a);
+    });
+  })();
+</script>

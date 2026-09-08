@@ -98,14 +98,15 @@
   </div>
 
   <div class="wrap">
-    <p class="mark">
+    <div class="mark">
       <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-humanoid"/></svg>
-      <span>同い年ロボット — <a href="https://sin1.studio/" >sin1's studio</a></span>
-    </p>
+      <span>同い年ロボット — <a href="https://sin1.studio/">sin1's studio</a></span>
+      <a class="list-link" href="list.html">一覧</a>
+    </div>
 
     <section class="hero">
       <h1>あなたと同い年の<br>ロボットは？</h1>
-      <p class="lead">生まれ年を入力すると、1950年〜現在に誕生した実在のロボットやロボット競技の中から、同じ年の記録を1件呼び出します。</p>
+      <p class="lead">生まれ年を入力すると、1950年〜現在に誕生した実在のロボット・ロボット競技・有名な架空のロボットの中から、同じ年の記録を1件呼び出します。</p>
 
       <form id="form">
         <div class="dial">
@@ -143,7 +144,8 @@
 
         <dl class="spec">
           <dt>分類</dt><dd id="robotCategory">—</dd>
-          <dt>開発</dt><dd id="robotMaker">—</dd>
+          <dt id="robotMakerLabel">開発</dt><dd id="robotMaker">—</dd>
+          <dt>種別</dt><dd id="robotKind">—</dd>
         </dl>
 
         <p class="blurb" id="robotBlurb"></p>
@@ -159,7 +161,10 @@
     </section>
 
     <footer>
-      <p><a href="https://sin1.studio/">sin1's studio</a> の実験企画。データは編集者が調べた範囲の実在ロボット・競技を記録したものです。</p>
+      <a class="footer-logo" href="https://sin1.studio/">
+        <img src="img/sss_logo_3x1_white.png" alt="sin1's studio">
+      </a>
+      <p>実在のロボット・ロボット競技のほか、有名な架空のロボットも収録しています。データは編集者が調べた範囲でまとめたものです。</p>
     </footer>
   </div>
 </div>

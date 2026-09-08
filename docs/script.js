@@ -1,18 +1,6 @@
 (function () {
   "use strict";
 
-  const CATEGORY_LABEL = {
-    industrial_arm: "産業用ロボットアーム",
-    wheeled_rover: "移動ロボット",
-    humanoid: "人型ロボット(ヒューマノイド)",
-    space: "宇宙探査ロボット",
-    home: "家庭用ロボット",
-    pet: "ペット型ロボット",
-    quadruped: "四足歩行ロボット",
-    other: "特殊用途ロボット",
-    competition: "ロボット競技",
-  };
-
   const CURRENT_YEAR = new Date().getFullYear();
   const MIN_YEAR = 1950;
 
@@ -31,7 +19,9 @@
   const robotNameEl = document.getElementById("robotName");
   const robotNameEnEl = document.getElementById("robotNameEn");
   const robotCategoryEl = document.getElementById("robotCategory");
+  const robotMakerLabelEl = document.getElementById("robotMakerLabel");
   const robotMakerEl = document.getElementById("robotMaker");
+  const robotKindEl = document.getElementById("robotKind");
   const robotBlurbEl = document.getElementById("robotBlurb");
   const shareBtn = document.getElementById("shareBtn");
   const moreBtn = document.getElementById("moreBtn");
@@ -122,7 +112,9 @@
       robotNameEnEl.textContent = "";
     }
     robotCategoryEl.textContent = CATEGORY_LABEL[robot.category] || robot.category;
+    robotMakerLabelEl.textContent = robot.fiction ? "初出" : "開発";
     robotMakerEl.textContent = robot.maker;
+    robotKindEl.textContent = robot.fiction ? "フィクション" : "実在";
     robotBlurbEl.textContent = robot.blurb;
 
     const shareText =
@@ -145,17 +137,22 @@
 
   function pickAndRender(year, presetId) {
     requestedYear = year;
-    const { list, exact, year: actualYear } = candidatesFor(year);
 
-    let robot;
+    // 一覧ページ等から特定のIDが指定された場合は、要求年の候補群に関わらずその記録を直接表示する
     if (presetId != null) {
-      robot = list.find((r) => r.id === presetId) || list[0];
-      queue = shuffle(list.filter((r) => r !== robot));
-    } else {
-      const shuffled = shuffle(list);
-      robot = shuffled[0];
-      queue = shuffled.slice(1);
+      const robot = ROBOTS.find((r) => r.id === presetId);
+      if (robot) {
+        const group = byYear.get(robot.year) || [robot];
+        queue = shuffle(group.filter((r) => r !== robot));
+        render(robot, robot.year !== year, robot.year);
+        return;
+      }
     }
+
+    const { list, exact, year: actualYear } = candidatesFor(year);
+    const shuffled = shuffle(list);
+    const robot = shuffled[0];
+    queue = shuffled.slice(1);
     render(robot, !exact, actualYear);
   }
 
