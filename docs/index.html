@@ -1,0 +1,168 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>同い年ロボット</title>
+<meta name="description" content="あなたの生まれ年を入力すると、同じ年に誕生した実在のロボットやロボット競技を教えてくれる記録帳です。">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="同い年ロボット">
+<meta property="og:description" content="あなたと同い年のロボットは？ 1950年〜現在の実在ロボットから記録を検索。">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+
+<!-- 再利用する line-art アイコン。装飾のみで意味を持たないため aria-hidden。 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="icon-industrial_arm" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="20" y="52" width="24" height="6" rx="1"/>
+      <line x1="32" y1="52" x2="32" y2="38"/>
+      <circle cx="32" cy="35" r="3"/>
+      <line x1="32" y1="35" x2="46" y2="23"/>
+      <circle cx="46" cy="21" r="3"/>
+      <line x1="46" y1="21" x2="40" y2="10"/>
+      <line x1="46" y1="21" x2="53" y2="13"/>
+    </symbol>
+    <symbol id="icon-wheeled_rover" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="13" y="29" width="38" height="17" rx="2"/>
+      <circle cx="22" cy="50" r="6"/>
+      <circle cx="42" cy="50" r="6"/>
+      <line x1="32" y1="29" x2="32" y2="15"/>
+      <circle cx="32" cy="11" r="3"/>
+    </symbol>
+    <symbol id="icon-humanoid" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="24" y="10" width="16" height="14" rx="4"/>
+      <line x1="32" y1="10" x2="32" y2="4"/>
+      <circle cx="32" cy="3" r="1.6" fill="currentColor" stroke="none"/>
+      <circle cx="28" cy="16" r="1.4" fill="currentColor" stroke="none"/>
+      <circle cx="36" cy="16" r="1.4" fill="currentColor" stroke="none"/>
+      <rect x="20" y="26" width="24" height="20" rx="3"/>
+      <line x1="20" y1="30" x2="10" y2="42"/>
+      <line x1="44" y1="30" x2="54" y2="42"/>
+      <line x1="26" y1="46" x2="24" y2="60"/>
+      <line x1="38" y1="46" x2="40" y2="60"/>
+    </symbol>
+    <symbol id="icon-space" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="20,44 44,44 38,26 26,26"/>
+      <line x1="20" y1="44" x2="10" y2="56"/>
+      <line x1="44" y1="44" x2="54" y2="56"/>
+      <line x1="26" y1="44" x2="21" y2="58"/>
+      <line x1="38" y1="44" x2="43" y2="58"/>
+      <line x1="32" y1="26" x2="32" y2="14"/>
+      <path d="M24 14 Q32 4 40 14"/>
+    </symbol>
+    <symbol id="icon-home" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="32" cy="35" r="21"/>
+      <circle cx="32" cy="35" r="6"/>
+      <line x1="32" y1="14" x2="32" y2="21"/>
+    </symbol>
+    <symbol id="icon-pet" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="16" y="28" width="27" height="14" rx="6"/>
+      <circle cx="49" cy="30" r="7"/>
+      <line x1="54" y1="24" x2="59" y2="17"/>
+      <line x1="16" y1="44" x2="13" y2="55"/>
+      <line x1="24" y1="44" x2="22" y2="55"/>
+      <line x1="34" y1="44" x2="34" y2="55"/>
+      <line x1="42" y1="44" x2="42" y2="55"/>
+      <path d="M18 32 Q7 28 9 19"/>
+    </symbol>
+    <symbol id="icon-quadruped" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="15" y="24" width="33" height="14" rx="3"/>
+      <line x1="19" y1="38" x2="13" y2="55"/>
+      <line x1="28" y1="38" x2="24" y2="55"/>
+      <line x1="36" y1="38" x2="40" y2="55"/>
+      <line x1="45" y1="38" x2="51" y2="55"/>
+      <line x1="48" y1="28" x2="57" y2="19"/>
+    </symbol>
+    <symbol id="icon-other" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="14" y="25" width="31" height="15" rx="2"/>
+      <ellipse cx="16" cy="46" rx="11" ry="6"/>
+      <ellipse cx="43" cy="46" rx="11" ry="6"/>
+      <line x1="45" y1="29" x2="55" y2="19"/>
+      <line x1="55" y1="19" x2="59" y2="25"/>
+    </symbol>
+    <symbol id="icon-competition" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 14h24v9a12 12 0 0 1-24 0z"/>
+      <path d="M20 16h-6a6 6 0 0 0 6 10"/>
+      <path d="M44 16h6a6 6 0 0 1-6 10"/>
+      <line x1="32" y1="35" x2="32" y2="46"/>
+      <rect x="22" y="46" width="20" height="6" rx="1"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="sheet">
+  <div class="bg-icons" aria-hidden="true">
+    <svg style="width:120px;top:6%;left:-3%;transform:rotate(-8deg)"><use href="#icon-humanoid"/></svg>
+    <svg style="width:100px;top:58%;left:82%;transform:rotate(10deg)"><use href="#icon-space"/></svg>
+    <svg style="width:90px;top:78%;left:2%;transform:rotate(6deg)"><use href="#icon-quadruped"/></svg>
+    <svg style="width:80px;top:14%;left:78%;transform:rotate(-6deg)"><use href="#icon-industrial_arm"/></svg>
+    <svg style="width:70px;top:40%;left:6%;transform:rotate(4deg)"><use href="#icon-competition"/></svg>
+  </div>
+
+  <div class="wrap">
+    <p class="mark">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-humanoid"/></svg>
+      <span>同い年ロボット — <a href="https://sin1.studio/" >sin1's studio</a></span>
+    </p>
+
+    <section class="hero">
+      <h1>あなたと同い年の<br>ロボットは？</h1>
+      <p class="lead">生まれ年を入力すると、1950年〜現在に誕生した実在のロボットやロボット競技の中から、同じ年の記録を1件呼び出します。</p>
+
+      <form id="form">
+        <div class="dial">
+          <button type="button" class="step" id="dec" aria-label="1年前へ">−</button>
+          <label>
+            <input type="number" id="year" inputmode="numeric" min="1950" value="1990">
+            <span class="unit">年生まれ</span>
+          </label>
+          <button type="button" class="step" id="inc" aria-label="1年後へ">＋</button>
+        </div>
+        <div class="range-row">
+          <input type="range" id="yearRange" min="1950" value="1990">
+          <div class="range-labels"><span>1950</span><span id="rangeMax">2026</span></div>
+        </div>
+        <button type="submit" class="submit">同い年のロボットを探す</button>
+      </form>
+    </section>
+
+    <section class="result" id="result" hidden aria-live="polite">
+      <div class="card" id="card">
+        <div class="card-head">
+          <span>FILE No. <span class="file-no" id="fileNo">000</span></span>
+          <span id="cardYear">0000年生まれ</span>
+        </div>
+
+        <p class="fallback-note" id="fallbackNote" hidden></p>
+
+        <div class="robot-row">
+          <div class="robot-icon"><svg id="robotIcon" viewBox="0 0 64 64"><use id="robotIconUse" href="#icon-humanoid"/></svg></div>
+          <div class="robot-main">
+            <h2 id="robotName">—</h2>
+            <p class="name-en" id="robotNameEn"></p>
+          </div>
+        </div>
+
+        <dl class="spec">
+          <dt>分類</dt><dd id="robotCategory">—</dd>
+          <dt>開発</dt><dd id="robotMaker">—</dd>
+        </dl>
+
+        <p class="blurb" id="robotBlurb"></p>
+
+        <div class="actions">
+          <a class="btn btn-share" id="shareBtn" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span>Xで共有する</span>
+          </a>
+          <button type="button" class="btn btn-more" id="moreBtn" hidden>この年の別の記録を見る</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p><a href="https://sin1.studio/">sin1's studio</a> の実験企画。データは編集者が調べた範囲の実在ロボット・競技を記録したものです。</p>
+    </footer>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
