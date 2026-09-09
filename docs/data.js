@@ -187,6 +187,18 @@ const ROBOTS = [
     blurb: "家庭用途を想定して発表された汎用人型ロボット。TIME誌の「2025年の発明」にも選出された。" },
   { id: 86, year: 1990, name: "全日本ロボット相撲大会", searchName: "ロボット相撲 全日本ロボット相撲大会", maker: "富士ソフト株式会社", category: "competition",
     blurb: "直径154cmの円形の土俵で、自作ロボットが相手を押し出すか転倒させれば勝ちという、日本発のロボット格闘競技の草分け的な全国大会。1989年の実験戦を経て1990年3月に第1回大会が開かれた。" },
+  { id: 87, year: 1980, name: "マイクロマウス大会", nameEn: "Micromouse", maker: "ニューテクノロジー振興財団", category: "competition",
+    blurb: "自律走行ロボットが未知の迷路を探索し、ゴールまでの最短時間を競う競技。1980年に始まった、世界的にも歴史の長い自律移動ロボット競技会のひとつ。" },
+  { id: 88, year: 2002, name: "ABUロボコン", nameEn: "ABU Robocon", maker: "ABU(アジア太平洋放送連合)", category: "competition",
+    blurb: "アジア太平洋の国と地域の大学・高専生が参加する国際ロボットコンテスト。日本代表は国内選考会「NHK学生ロボコン」の優勝チームなどが務める。" },
+  { id: 89, year: 2007, name: "VEX Robotics Competition", maker: "Innovation First(米国)", category: "competition",
+    blurb: "小中高生から大学生までが参加する国際的な学生ロボット競技会。参加チーム数の多さから「世界最大のロボット競技会」としてギネス世界記録に認定されている。" },
+  { id: 90, year: 2015, name: "RoboMaster(ロボマスター)", maker: "DJI(中国)", category: "competition",
+    blurb: "ドローン大手DJIが主催する大学生向けロボット対戦競技会。カメラ映像による遠隔操縦や自動追尾、BB弾の発射機構を備えたロボットが入り乱れて戦う、Eスポーツさながらのチーム戦が特徴。" },
+  { id: 91, year: 2018, name: "World Robot Summit", nameEn: "WRS", maker: "経済産業省・NEDO", category: "competition",
+    blurb: "ものづくり・サービス・災害対応など実社会の課題を再現したフィールドで技術を競う、経済産業省とNEDOが主導する国際ロボット競技会。" },
+  { id: 92, year: 1999, name: "BattleBots(バトルボッツ)", maker: "BattleBots, Inc.(米国)", category: "competition",
+    blurb: "回転刃やフリッパーなどの武装を積んだ有線・無線操縦ロボットが、相手の物理的破壊や機能停止を目指す格闘競技会。北米を中心に世界的な知名度を持つロボット格闘技の代表格。" },
 
   // 架空ロボット追加分(映画・特撮・ゲームなどアニメ以外の作品も収録。id78/80/81/84/85は作中年エントリに対応する発表年の記録)
   { id: 77, year: 1927, name: "マリア", nameEn: "Maria (Metropolis)", maker: "映画『メトロポリス』", category: "humanoid", fiction: true,
