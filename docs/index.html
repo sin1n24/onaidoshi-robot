@@ -1,12 +1,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>同い年ロボット</title>
-<meta name="description" content="あなたの生まれ年を入力すると、同じ年に誕生した実在のロボットやロボット競技を教えてくれる記録帳です。">
+<meta name="description" content="あなたの生まれ年を入力すると、同じ年に誕生した実在・架空のロボットやロボット競技を教えてくれる記録帳です。">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8274345994743020" crossorigin="anonymous"></script>
 <meta property="og:title" content="同い年ロボット">
-<meta property="og:description" content="あなたと同い年のロボットは？ 1950年〜現在の実在ロボットから記録を検索。">
+<meta property="og:description" content="あなたと同い年のロボットは？ 1950年〜現在の実在・架空のロボットから記録を検索。">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="style.css">
 
@@ -122,12 +122,19 @@
           <input type="range" id="yearRange" min="1950" max="2100" value="1990">
           <div class="range-labels"><span>1950</span><span id="rangeMax">2026</span></div>
         </div>
+        <div class="options">
+          <label class="checkbox"><input type="checkbox" id="includeFiction" checked><span>フィクションも入れる</span></label>
+          <label class="checkbox"><input type="checkbox" id="approxSearch"><span>だいたいで探す(±2年)</span></label>
+        </div>
         <button type="submit" class="submit">同い年のロボットを探す</button>
       </form>
     </section>
 
     <section class="result" id="result" hidden aria-live="polite">
-      <div class="card" id="card">
+      <div class="ledger" id="resultsList"></div>
+      <p class="fallback-note" id="emptyNote" hidden></p>
+
+      <div class="card" id="card" hidden>
         <div class="card-head">
           <span>FILE No. <span class="file-no" id="fileNo">000</span></span>
           <span id="cardYear">0000年生まれ</span>
@@ -160,7 +167,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5.5-5.5L4 21"/></svg>
             <span>画像を検索</span>
           </a>
-          <button type="button" class="btn btn-more" id="moreBtn" hidden>この年の別の記録を見る</button>
         </div>
       </div>
     </section>
@@ -169,7 +175,7 @@
       <a class="footer-logo" href="https://sin1.studio/">
         <img src="img/sss_logo_3x1_white.png" alt="sin1's studio">
       </a>
-      <p>実在のロボット・ロボット競技のほか、有名な架空のロボットも収録しています。データは編集者が調べた範囲でまとめたものです。内容に誤りがあれば申し訳ありません。お気づきの点は<a href="mailto:sin1@sin1.studio">こちら</a>までご連絡ください。</p>
+      <p>実在・架空のロボットやロボット競技を収録。内容に誤りがあればお詫びします。お気づきの点は<a href="mailto:support+onaidoshi-robot@sin1.studio">こちら</a>まで。</p>
     </footer>
   </div>
 </div>

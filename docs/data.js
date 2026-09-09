@@ -13,6 +13,18 @@ const CATEGORY_LABEL = {
   other: "特殊用途ロボット",
   competition: "ロボット競技",
 };
+// ジャンル(分類)ごとの識別色。一覧・検索結果一覧の行の背景/左ボーダーに使う。
+const CATEGORY_COLOR = {
+  industrial_arm: "#3d6b8f",
+  wheeled_rover: "#4f8f6b",
+  humanoid: "#8a6a3f",
+  space: "#5a5a9e",
+  home: "#a68a2e",
+  pet: "#b06a7a",
+  quadruped: "#6b7a4a",
+  other: "#6b6b6b",
+  competition: "#3f7d3a",
+};
 const ROBOTS = [
   { id: 1, year: 1961, name: "ユニメート", nameEn: "Unimate", maker: "Unimation", category: "industrial_arm",
     blurb: "ゼネラルモーターズの工場に配備された、世界初の実用産業用ロボット。高温のダイカスト成形品を取り出す作業を任された。" },

@@ -20,7 +20,7 @@
     <section class="hero" style="text-align:left">
       <h1 style="font-size:clamp(1.4rem,5vw,1.9rem)">同い年ロボット 記録一覧</h1>
       <p class="lead" style="margin:0 0 12px">収録している全記録です。年をクリックすると、その記録のカードを直接表示します。</p>
-      <p class="lead" style="margin:0 0 28px">「フィクション」タグの記録は、トップページの「同い年のロボットを探す」検索には含まれません。この一覧からのみ確認できます。</p>
+      <p class="lead" style="margin:0 0 28px">「フィクション」タグの記録は、トップページの「フィクションも入れる」をオフにすると検索結果から外せます。</p>
     </section>
 
     <div class="filter-bar" id="filterBar">
@@ -36,7 +36,7 @@
       <a class="footer-logo" href="https://sin1.studio/">
         <img src="img/sss_logo_3x1_white.png" alt="sin1's studio">
       </a>
-      <p>実在のロボット・ロボット競技のほか、有名な架空のロボットも収録しています。データは編集者が調べた範囲でまとめたものです。内容に誤りがあれば申し訳ありません。お気づきの点は<a href="mailto:sin1@sin1.studio">こちら</a>までご連絡ください。</p>
+      <p>実在・架空のロボットやロボット競技を収録。内容に誤りがあればお詫びします。お気づきの点は<a href="mailto:support+onaidoshi-robot@sin1.studio">こちら</a>まで。</p>
     </footer>
   </div>
 </div>
@@ -57,9 +57,12 @@
 
     sorted.forEach((r) => {
       const kind = kindOf(r);
+      const color = CATEGORY_COLOR[r.category] || "#6b6b6b";
       const a = document.createElement("a");
       a.className = "ledger-row";
       a.dataset.kind = kind;
+      a.style.borderLeft = "4px solid " + color;
+      a.style.backgroundColor = color + "1a";
       a.href = "index.html?year=" + r.year + "&id=" + r.id;
       a.innerHTML =
         '<span class="ledger-year">' + r.year + "</span>" +

@@ -97,15 +97,17 @@ body {
 }
 .mark .list-link {
   flex-shrink: 0;
-  padding: 4px 12px;
-  border: 1px solid rgba(154, 196, 224, 0.35);
+  padding: 7px 18px;
+  border: none;
   border-radius: 999px;
-  font-size: 0.76rem;
-  border-bottom: 1px solid rgba(154, 196, 224, 0.35);
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--amber);
+  color: var(--navy-deep);
 }
 .mark .list-link:hover {
-  border-color: var(--amber);
-  background: rgba(232, 149, 47, 0.12);
+  background: #f2a747;
+  color: var(--navy-deep);
 }
 
 /* ---------- hero ---------- */
@@ -217,6 +219,28 @@ input[type="range"] {
   margin-top: 4px;
 }
 
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin: 20px 0 0;
+  font-size: 0.85rem;
+  color: var(--cream-dim);
+}
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--amber);
+  cursor: pointer;
+}
+
 .submit {
   display: inline-block;
   margin-top: 28px;
@@ -257,6 +281,7 @@ input[type="range"] {
   border-radius: 8px;
   padding: 30px 26px 26px;
   box-shadow: 0 18px 40px rgba(6, 12, 22, 0.45);
+  margin-top: 24px;
 }
 .card.replay {
   animation: stamp-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
@@ -404,16 +429,7 @@ input[type="range"] {
   width: 16px;
   height: 16px;
 }
-.btn-more {
-  background: transparent;
-  border-color: var(--ink-soft);
-  color: var(--ink);
-}
-.btn-more[hidden] {
-  display: none;
-}
-
-/* ---------- filter bar + ledger (list.html) ---------- */
+/* ---------- filter bar + ledger (list.html / search results) ---------- */
 
 .filter-bar {
   display: flex;
@@ -459,7 +475,18 @@ input[type="range"] {
   color: var(--ink);
   text-decoration: none;
   border-bottom: 1px dashed var(--paper-edge);
-  border-left: 3px solid transparent;
+  border-left: 4px solid transparent;
+}
+button.ledger-row {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  border-top: none;
+  border-right: none;
+  border-bottom: 1px dashed var(--paper-edge);
+  appearance: none;
+  -webkit-appearance: none;
 }
 .ledger-row:last-child,
 .ledger-row.is-last-visible {
@@ -469,8 +496,11 @@ input[type="range"] {
   display: none;
 }
 .ledger-row:hover {
-  background: rgba(232, 149, 47, 0.1);
-  border-left-color: var(--amber);
+  filter: brightness(0.96);
+}
+.ledger-row.is-selected {
+  outline: 2px solid var(--amber);
+  outline-offset: -2px;
 }
 
 .ledger-year {
@@ -515,6 +545,10 @@ input[type="range"] {
   border-color: var(--steel);
   color: var(--steel);
 }
+.ledger-kind.is-exact {
+  border-color: var(--amber-deep);
+  color: var(--amber-deep);
+}
 
 @media (max-width: 420px) {
   .ledger-row {
@@ -554,7 +588,7 @@ footer .footer-logo:hover {
   opacity: 1;
 }
 footer .footer-logo img {
-  height: 44px;
+  height: 56px;
   width: auto;
   display: block;
 }
