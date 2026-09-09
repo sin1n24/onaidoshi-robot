@@ -31,6 +31,8 @@
   const robotKindEl = document.getElementById("robotKind");
   const robotBlurbEl = document.getElementById("robotBlurb");
   const shareBtn = document.getElementById("shareBtn");
+  const hideAgeRow = document.getElementById("hideAgeRow");
+  const hideAgeCb = document.getElementById("hideAgeCb");
   const imageSearchBtn = document.getElementById("imageSearchBtn");
   const amazonBtn = document.getElementById("amazonBtn");
   const amazonBtnLabel = document.getElementById("amazonBtnLabel");
@@ -123,6 +125,10 @@
   // true のときは「一覧から直接開いた記録」であり、閲覧者自身の生まれ年とは無関係。
   // シェア文で「私は◯◯年生まれ」と偽らないよう、この場合は文面を変える。
   let cameFromDirectLink = false;
+  // 現在カードに表示中のロボット/差分。「年齢がバレない文でシェア」チェックボックスを
+  // カード表示後にON/OFFされてもシェアリンクを再計算できるよう保持しておく。
+  let currentRobot = null;
+  let currentDiff = 0;
 
   function buildRow(robot, diff) {
     const btn = document.createElement("button");
@@ -156,7 +162,39 @@
     if (lastVisible) lastVisible.classList.add("is-last-visible");
   }
 
+  // シェア文/シェアURLを組み立てて shareBtn.href に反映する。
+  // 「年齢がバレない文でシェア」がONのとき(または一覧からの直接表示のとき)は、
+  // 「私と同い年」という個人の年齢に紐づく主張を避け、URLからも年を外す。
+  function updateShareLink() {
+    if (!currentRobot) return;
+    const robot = currentRobot;
+    const diff = currentDiff;
+    const isFallback = diff > 0;
+    const hideAge = cameFromDirectLink || hideAgeCb.checked;
+
+    let shareText;
+    if (cameFromDirectLink) {
+      shareText = "「" + robot.name + "」を見つけました #同い年ロボット";
+    } else if (hideAge) {
+      shareText = "「" + robot.name + "」と同い年の人、集合 #同い年ロボット";
+    } else if (isFallback) {
+      shareText = "私とだいたい同い年のロボットは「" + robot.name + "」でした #同い年ロボット";
+    } else {
+      shareText = "私と同い年のロボットは「" + robot.name + "」でした #同い年ロボット";
+    }
+
+    const shareUrl =
+      location.origin + location.pathname + "?id=" + robot.id + (hideAge ? "" : "&year=" + requestedYear);
+    shareBtn.href =
+      "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(shareUrl);
+  }
+  hideAgeCb.addEventListener("change", updateShareLink);
+
   function showDetail(robot, diff) {
+    currentRobot = robot;
+    currentDiff = diff;
+    hideAgeRow.hidden = cameFromDirectLink;
+
     const actualYear = robot.year;
     const isFallback = diff > 0;
 
@@ -191,18 +229,7 @@
     robotKindEl.textContent = robot.fiction ? "フィクション" : "実在";
     robotBlurbEl.textContent = robot.blurb;
 
-    let shareText;
-    if (cameFromDirectLink) {
-      // 一覧からの直接表示: 閲覧者の生まれ年は分からないので「同い年」を名乗らない
-      shareText = "「" + robot.name + "」を見つけました #同い年ロボット";
-    } else if (isFallback) {
-      shareText = "私とだいたい同い年のロボットは「" + robot.name + "」でした #同い年ロボット";
-    } else {
-      shareText = "私と同い年のロボットは「" + robot.name + "」でした #同い年ロボット";
-    }
-    const shareUrl = location.origin + location.pathname + "?year=" + requestedYear + "&id=" + robot.id;
-    shareBtn.href =
-      "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(shareUrl);
+    updateShareLink();
 
     const imageQuery = robot.searchName || (robot.name + (robot.nameEn ? " " + robot.nameEn : ""));
     imageSearchBtn.href = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(imageQuery);
@@ -211,7 +238,8 @@
     amazonBtn.href = amazonLink.href;
     amazonBtnLabel.textContent = amazonLink.label;
 
-    history.replaceState(null, "", "?year=" + requestedYear + "&id=" + robot.id);
+    // 一覧からの直接表示では、閲覧者自身の生まれ年ではない年をURLに残さないよう年を省く
+    history.replaceState(null, "", cameFromDirectLink ? "?id=" + robot.id : "?year=" + requestedYear + "&id=" + robot.id);
 
     cardEl.hidden = false;
     cardEl.classList.remove("replay");
@@ -261,10 +289,12 @@
   function openDirect(year, id) {
     const robot = ROBOTS.find((r) => r.id === id);
     if (!robot) {
-      runSearch(clampYear(year));
+      if (!Number.isNaN(year)) runSearch(clampYear(year));
       return;
     }
-    requestedYear = year;
+    // year が無い(年齢を伏せた共有リンクなど)場合は記録自身の年で代用する。
+    // cameFromDirectLink 経由の表示では requestedYear は文面/URLに使われないため実害はない。
+    requestedYear = Number.isNaN(year) ? robot.year : year;
     cameFromDirectLink = true;
 
     const group = byYear.get(robot.year) || [robot];
@@ -289,13 +319,15 @@
     runSearch(parseInt(yearInput.value, 10));
   });
 
-  // 共有されたリンク (?year=&id=) を開いた場合はその記録を直接表示する
+  // 共有されたリンク (?year=&id= または年齢を伏せた ?id= のみ) を開いた場合はその記録を直接表示する
   const params = new URLSearchParams(location.search);
   const paramYear = parseInt(params.get("year"), 10);
   const paramId = parseInt(params.get("id"), 10);
-  if (!Number.isNaN(paramYear) && !Number.isNaN(paramId)) {
-    yearInput.value = clampYear(paramYear);
-    rangeInput.value = yearInput.value;
+  if (!Number.isNaN(paramId)) {
+    if (!Number.isNaN(paramYear)) {
+      yearInput.value = clampYear(paramYear);
+      rangeInput.value = yearInput.value;
+    }
     // フォーム欄は1950〜現在の範囲に収めるが、だいたい同い年の判定には元の年をそのまま使う
     // (1927年のマリアや2112年のドラえもんのような範囲外の記録も、一覧からのリンクでは正しく表示するため)
     openDirect(paramYear, paramId);

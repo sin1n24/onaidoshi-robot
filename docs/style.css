@@ -389,11 +389,20 @@ input[type="range"] {
   font-size: 0.95rem;
 }
 
+.share-option {
+  margin-top: 18px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+.share-option[hidden] {
+  display: none;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 12px;
 }
 
 .btn {
