@@ -3,7 +3,8 @@
 
   const CURRENT_YEAR = new Date().getFullYear();
   const MIN_YEAR = 1950;
-  const APPROX_RANGE = 2; // 「だいたいで探す」の許容範囲(±年)
+  const APPROX_RANGE = 1; // 「だいたいで探す」の本来の許容範囲(±年)
+  const APPROX_RANGE_WIDE = 2; // ±1年でも見つからない場合に自動で広げる範囲(±年)
 
   const yearInput = document.getElementById("year");
   const rangeInput = document.getElementById("yearRange");
@@ -31,6 +32,42 @@
   const robotBlurbEl = document.getElementById("robotBlurb");
   const shareBtn = document.getElementById("shareBtn");
   const imageSearchBtn = document.getElementById("imageSearchBtn");
+  const amazonBtn = document.getElementById("amazonBtn");
+  const amazonBtnLabel = document.getElementById("amazonBtnLabel");
+
+  // Amazonアソシエイト(タグ: sin1n24-22)。実在ロボットは類似の完成品が買えないことが多いため、
+  // 「自分で作ってみる」提案として3Dプリンターの商品ページへ誘導する。家庭用/ペット型ロボットは
+  // 実際に流通している製品なのでその名前で検索、フィクションはグッズ検索へ誘導する。
+  const AMAZON_TAG = "sin1n24-22";
+  const AMAZON_MAKER_URL =
+    "https://www.amazon.co.jp/dp/B0CRYJBKQQ?linkCode=ll2&tag=" + AMAZON_TAG + "&linkId=cb125917ff36cb42482b6ccfc156ca73&language=ja_JP&ref_=as_li_ss_tl";
+  function amazonSearchUrl(query) {
+    return "https://www.amazon.co.jp/s?k=" + encodeURIComponent(query) + "&tag=" + AMAZON_TAG;
+  }
+  // カテゴリに応じた「関連工作キット」の検索ワード。実物が買えないロボットでも、
+  // 同じジャンルの工作キット/プラモデルへ誘導することで多少強引でも関連性を保つ。
+  const CATEGORY_AMAZON_QUERY = {
+    competition: "ロボット 格闘 工作キット",
+    industrial_arm: "ロボットアーム 工作キット",
+    humanoid: "二足歩行ロボット 組み立てキット",
+    quadruped: "四足歩行ロボット キット",
+    space: "火星探査機 プラモデル",
+    wheeled_rover: "ライントレースカー 工作キット",
+  };
+  function getAmazonLink(robot) {
+    if (robot.fiction) {
+      const base = robot.searchName || robot.name;
+      return { href: amazonSearchUrl(base + " グッズ"), label: "関連グッズをAmazonで探す" };
+    }
+    if (robot.category === "home" || robot.category === "pet") {
+      return { href: amazonSearchUrl(robot.nameEn || robot.name), label: "Amazonで探す" };
+    }
+    const query = CATEGORY_AMAZON_QUERY[robot.category];
+    if (query) {
+      return { href: amazonSearchUrl(query), label: "関連キットをAmazonで探す" };
+    }
+    return { href: AMAZON_MAKER_URL, label: "自分で作る(3Dプリンター)" };
+  }
 
   yearInput.max = String(CURRENT_YEAR);
   rangeInput.max = String(CURRENT_YEAR);
@@ -41,7 +78,7 @@
 
   function clampYear(v) {
     v = Math.round(v);
-    if (Number.isNaN(v)) return 1989;
+    if (Number.isNaN(v)) return 1994;
     return Math.max(MIN_YEAR, Math.min(CURRENT_YEAR, v));
   }
 
@@ -93,7 +130,7 @@
     const color = CATEGORY_COLOR[robot.category] || "#6b6b6b";
     btn.style.borderLeft = "4px solid " + color;
     btn.style.backgroundColor = color + "2e";
-    const diffLabel = diff === 0 ? "ぴったり" : "±" + diff + "年";
+    const diffLabel = diff === 0 ? "ぴったり" : "だいたい";
     btn.innerHTML =
       '<span class="ledger-year">' + robot.year + "</span>" +
       '<span class="ledger-name">' + robot.name + (robot.nameEn ? '<span class="ledger-en">' + robot.nameEn + "</span>" : "") + "</span>" +
@@ -133,7 +170,7 @@
     if (isFallback) {
       fallbackNoteEl.hidden = false;
       fallbackNoteEl.textContent =
-        requestedYear + "年ぴったりではなく、" + actualYear + "年(±" + diff + "年)の記録です。";
+        requestedYear + "年ぴったりではなく、" + actualYear + "年のだいたい同い年の記録です。";
     } else {
       fallbackNoteEl.hidden = true;
     }
@@ -170,6 +207,10 @@
     const imageQuery = robot.searchName || (robot.name + (robot.nameEn ? " " + robot.nameEn : ""));
     imageSearchBtn.href = "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(imageQuery);
 
+    const amazonLink = getAmazonLink(robot);
+    amazonBtn.href = amazonLink.href;
+    amazonBtnLabel.textContent = amazonLink.label;
+
     history.replaceState(null, "", "?year=" + requestedYear + "&id=" + robot.id);
 
     cardEl.hidden = false;
@@ -187,10 +228,15 @@
     let maxDiff = approxCb.checked ? APPROX_RANGE : 0;
     let matches = findMatches(year, includeFiction, maxDiff);
 
-    // ぴったりの記録がない場合は「だいたいで探す」を自動でオンにして探し直す
+    // ぴったりの記録がない場合は「だいたいで探す」(±1年)を自動でオンにして探し直す
     if (matches.length === 0 && !approxCb.checked) {
       approxCb.checked = true;
       maxDiff = APPROX_RANGE;
+      matches = findMatches(year, includeFiction, maxDiff);
+    }
+    // ±1年でも見つからない場合は、さらに±2年まで自動で広げる
+    if (matches.length === 0 && maxDiff < APPROX_RANGE_WIDE) {
+      maxDiff = APPROX_RANGE_WIDE;
       matches = findMatches(year, includeFiction, maxDiff);
     }
 
@@ -201,7 +247,7 @@
       resultsListEl.hidden = true;
       cardEl.hidden = true;
       emptyNoteEl.hidden = false;
-      emptyNoteEl.textContent = year + "年の前後" + APPROX_RANGE + "年には記録が見つかりませんでした。年を変えてお試しください。";
+      emptyNoteEl.textContent = year + "年の近くにも記録が見つかりませんでした。年を変えてお試しください。";
     } else {
       resultsListEl.hidden = false;
       emptyNoteEl.hidden = true;

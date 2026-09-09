@@ -281,6 +281,8 @@ input[type="range"] {
   border-radius: 8px;
   padding: 30px 26px 26px;
   box-shadow: 0 18px 40px rgba(6, 12, 22, 0.45);
+}
+.card ~ .ledger {
   margin-top: 24px;
 }
 .card.replay {
@@ -426,6 +428,14 @@ input[type="range"] {
   color: var(--ink);
 }
 .btn-image svg {
+  width: 16px;
+  height: 16px;
+}
+.btn-amazon {
+  background: #ff9900;
+  color: #14263d;
+}
+.btn-amazon svg {
   width: 16px;
   height: 16px;
 }

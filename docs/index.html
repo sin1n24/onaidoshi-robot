@@ -113,27 +113,24 @@
         <div class="dial">
           <button type="button" class="step" id="dec" aria-label="1年前へ">−</button>
           <label>
-            <input type="number" id="year" inputmode="numeric" min="1950" value="1989">
+            <input type="number" id="year" inputmode="numeric" min="1950" value="1994">
             <span class="unit">年生まれ</span>
           </label>
           <button type="button" class="step" id="inc" aria-label="1年後へ">＋</button>
         </div>
         <div class="range-row">
-          <input type="range" id="yearRange" min="1950" max="2100" value="1989">
+          <input type="range" id="yearRange" min="1950" max="2100" value="1994">
           <div class="range-labels"><span>1950</span><span id="rangeMax">2026</span></div>
         </div>
         <div class="options">
           <label class="checkbox"><input type="checkbox" id="includeFiction" checked><span>フィクションも入れる</span></label>
-          <label class="checkbox"><input type="checkbox" id="approxSearch"><span>だいたいで探す(±2年)</span></label>
+          <label class="checkbox"><input type="checkbox" id="approxSearch"><span>だいたいで探す</span></label>
         </div>
         <button type="submit" class="submit">同い年のロボットを探す</button>
       </form>
     </section>
 
     <section class="result" id="result" hidden aria-live="polite">
-      <div class="ledger" id="resultsList"></div>
-      <p class="fallback-note" id="emptyNote" hidden></p>
-
       <div class="card" id="card" hidden>
         <div class="card-head">
           <span>FILE No. <span class="file-no" id="fileNo">000</span></span>
@@ -167,8 +164,15 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5.5-5.5L4 21"/></svg>
             <span>画像を検索</span>
           </a>
+          <a class="btn btn-amazon" id="amazonBtn" href="#" target="_blank" rel="noopener sponsored">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            <span id="amazonBtnLabel">Amazonで買う</span>
+          </a>
         </div>
       </div>
+
+      <p class="fallback-note" id="emptyNote" hidden></p>
+      <div class="ledger" id="resultsList"></div>
     </section>
 
     <footer>
@@ -176,6 +180,7 @@
         <img src="img/sss_logo_3x1_white.png" alt="sin1's studio">
       </a>
       <p>実在・架空のロボットやロボット競技を収録。内容に誤りがあれば申し訳ありませんが、<a href="mailto:support+onaidoshi-robot@sin1.studio">こちら</a>でご指摘頂けると助かります。</p>
+      <p>※当サイトはAmazonアソシエイト・プログラムの参加者であり、適格販売により収入を得ています。</p>
     </footer>
   </div>
 </div>
