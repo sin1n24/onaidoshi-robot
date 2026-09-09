@@ -14,16 +14,17 @@ const CATEGORY_LABEL = {
   competition: "ロボット競技",
 };
 // ジャンル(分類)ごとの識別色。一覧・検索結果一覧の行の背景/左ボーダーに使う。
+// 色相を離して(似た緑系統が3つ並ばないよう)識別しやすくしたジャンル配色。
 const CATEGORY_COLOR = {
   industrial_arm: "#3d6b8f",
   wheeled_rover: "#4f8f6b",
-  humanoid: "#8a6a3f",
+  humanoid: "#8a5138",
   space: "#5a5a9e",
   home: "#a68a2e",
   pet: "#b06a7a",
-  quadruped: "#6b7a4a",
+  quadruped: "#3f8f8a",
   other: "#6b6b6b",
-  competition: "#3f7d3a",
+  competition: "#7a4a99",
 };
 const ROBOTS = [
   { id: 1, year: 1961, name: "ユニメート", nameEn: "Unimate", maker: "Unimation", category: "industrial_arm",
@@ -34,7 +35,7 @@ const ROBOTS = [
     blurb: "電動6軸で動くロボットアームの研究機。以降のロボットアーム設計に長く影響を与えた。" },
   { id: 4, year: 1970, name: "ルノホート1号", nameEn: "Lunokhod 1", maker: "ソ連", category: "space",
     blurb: "月面を走行した世界初の無人探査車。8つの車輪で月面を約10.5km走行した。" },
-  { id: 5, year: 1972, name: "WABOT-1", maker: "早稲田大学", category: "humanoid",
+  { id: 5, year: 1973, name: "WABOT-1", maker: "早稲田大学", category: "humanoid",
     blurb: "世界初のフルスケール人型知能ロボット。二足歩行と簡単な会話、物体の把持ができた。" },
   { id: 6, year: 1973, name: "ファムルス", nameEn: "Famulus", maker: "KUKA", category: "industrial_arm",
     blurb: "電動モーターだけで駆動する世界初の6軸産業用ロボットアーム。" },
@@ -42,7 +43,7 @@ const ROBOTS = [
     blurb: "火星に着陸し、画像と土壌データを送り続けた探査機。火星表面で稼働した最初期の探査機のひとつ。" },
   { id: 8, year: 1984, name: "WABOT-2", maker: "早稲田大学", category: "humanoid",
     blurb: "楽譜を読んで鍵盤楽器を演奏できた人型ロボット。人と対話しながら演奏する研究機として注目された。" },
-  { id: 9, year: 1981, name: "スカラロボット", nameEn: "SCARA", maker: "山梨大学・三共製作所", category: "industrial_arm",
+  { id: 9, year: 1981, name: "スカラロボット", nameEn: "SCARA", maker: "山梨大学・三協精機", category: "industrial_arm",
     blurb: "水平多関節型の産業用ロボット規格。組み立てラインでの精密作業に広く使われるようになった。" },
   { id: 10, year: 1986, name: "HERO 2000", maker: "Heathkit", category: "home",
     blurb: "家庭向けに販売された初期のホビーロボット。音声合成とアーム、センサーを備えた自作キットとして人気を集めた。" },
@@ -110,10 +111,10 @@ const ROBOTS = [
     blurb: "手指の自由度や歩行速度が向上した二代目の人型ロボット。工場内作業のデモ映像が公開された。" },
   { id: 42, year: 2024, name: "Unitree G1", maker: "Unitree Robotics", category: "humanoid",
     blurb: "比較的手ごろな価格で発表された小柄な人型ロボット。研究機関や開発者にも広く手が届く存在になった。" },
-  { id: 43, year: 1988, name: "高専ロボコン", maker: "全国の高等専門学校", category: "competition",
-    blurb: "毎年発表される新しいお題に合わせ、学生が自作ロボットで競う「アイデア対決 全国高等専門学校ロボットコンテスト」。" },
-  { id: 44, year: 1990, name: "かわさきロボット競技大会", maker: "川崎市青少年科学館", category: "competition",
-    blurb: "通称「かわロボ」。自作の小型格闘ロボットで相手を土俵の外へ押し出す、長く愛されてきた草の根の競技会。" },
+  { id: 43, year: 1988, name: "高専ロボコン", maker: "NHK", category: "competition",
+    blurb: "毎年発表される新しいお題に合わせ、学生が自作ロボットで競う「アイデア対決 全国高等専門学校ロボットコンテスト」。NHKの「アイデア対決・ロボットコンテスト」高専部門として始まり、2000年から全国高等専門学校連合会も主催に加わった。" },
+  { id: 44, year: 1994, name: "かわさきロボット競技大会", maker: "川崎市・川崎市産業振興財団", category: "competition",
+    blurb: "通称「かわロボ」。市制70周年記念行事として第1回が開かれた、脚・腕を持つ自作ロボットどうしの格闘競技会。" },
   { id: 45, year: 1992, name: "FIRSTロボティクス", nameEn: "FIRST Robotics Competition", maker: "FIRST(米国)", category: "competition",
     blurb: "高校生チームが、毎年発表される新ルールに合わせてロボットを設計・製作する世界最大級の学生ロボット競技会。" },
   { id: 46, year: 1997, name: "ロボカップ", nameEn: "RoboCup", maker: "ロボカップ国際委員会", category: "competition",

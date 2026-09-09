@@ -41,7 +41,7 @@
 
   function clampYear(v) {
     v = Math.round(v);
-    if (Number.isNaN(v)) return 1990;
+    if (Number.isNaN(v)) return 1989;
     return Math.max(MIN_YEAR, Math.min(CURRENT_YEAR, v));
   }
 
@@ -92,7 +92,7 @@
     btn.className = "ledger-row";
     const color = CATEGORY_COLOR[robot.category] || "#6b6b6b";
     btn.style.borderLeft = "4px solid " + color;
-    btn.style.backgroundColor = color + "1a";
+    btn.style.backgroundColor = color + "2e";
     const diffLabel = diff === 0 ? "ぴったり" : "±" + diff + "年";
     btn.innerHTML =
       '<span class="ledger-year">' + robot.year + "</span>" +
@@ -184,8 +184,15 @@
     cameFromDirectLink = false;
 
     const includeFiction = includeFictionCb.checked;
-    const maxDiff = approxCb.checked ? APPROX_RANGE : 0;
-    const matches = findMatches(year, includeFiction, maxDiff);
+    let maxDiff = approxCb.checked ? APPROX_RANGE : 0;
+    let matches = findMatches(year, includeFiction, maxDiff);
+
+    // ぴったりの記録がない場合は「だいたいで探す」を自動でオンにして探し直す
+    if (matches.length === 0 && !approxCb.checked) {
+      approxCb.checked = true;
+      maxDiff = APPROX_RANGE;
+      matches = findMatches(year, includeFiction, maxDiff);
+    }
 
     resultSection.hidden = false;
 
@@ -194,9 +201,7 @@
       resultsListEl.hidden = true;
       cardEl.hidden = true;
       emptyNoteEl.hidden = false;
-      emptyNoteEl.textContent = approxCb.checked
-        ? year + "年の前後" + APPROX_RANGE + "年には記録が見つかりませんでした。年を変えてお試しください。"
-        : year + "年ぴったりの記録はまだありません。「だいたいで探す」をオンにすると近い年の記録も表示されます。";
+      emptyNoteEl.textContent = year + "年の前後" + APPROX_RANGE + "年には記録が見つかりませんでした。年を変えてお試しください。";
     } else {
       resultsListEl.hidden = false;
       emptyNoteEl.hidden = true;
@@ -205,7 +210,6 @@
       resultsListEl.querySelector(".ledger-row").classList.add("is-selected");
     }
 
-    resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function openDirect(year, id) {
@@ -231,7 +235,6 @@
     const row = Array.from(resultsListEl.querySelectorAll(".ledger-row"))[rowIndex];
     if (row) row.classList.add("is-selected");
     showDetail(robot, 0);
-    resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   form.addEventListener("submit", (e) => {
