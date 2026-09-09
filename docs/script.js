@@ -194,12 +194,11 @@
     let shareText;
     if (cameFromDirectLink) {
       // 一覧からの直接表示: 閲覧者の生まれ年は分からないので「同い年」を名乗らない
-      shareText = "「" + robot.name + "」（" + actualYear + "年）を見つけました🤖 #同い年ロボット";
+      shareText = "「" + robot.name + "」を見つけました #同い年ロボット";
     } else if (isFallback) {
-      shareText =
-        "私(" + requestedYear + "年生まれ)とだいたい同い年(" + actualYear + "年生まれ)のロボットは「" + robot.name + "」でした🤖 #同い年ロボット";
+      shareText = "ちなみに、私とだいたい同い年のロボットは「" + robot.name + "」でした #同い年ロボット";
     } else {
-      shareText = "私(" + requestedYear + "年生まれ)と同い年のロボットは「" + robot.name + "」でした🤖 #同い年ロボット";
+      shareText = "ちなみに、私と同い年のロボットは「" + robot.name + "」でした #同い年ロボット";
     }
     const shareUrl = location.origin + location.pathname + "?year=" + requestedYear + "&id=" + robot.id;
     shareBtn.href =
