@@ -53,6 +53,7 @@
     quadruped: "四足歩行ロボット キット",
     space: "火星探査機 プラモデル",
     wheeled_rover: "ライントレースカー 工作キット",
+    other: "ロボット 工作キット",
   };
   function getAmazonLink(robot) {
     if (robot.fiction) {
